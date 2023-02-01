@@ -90,21 +90,29 @@ descriptionPrefix = "in the Streets, Johnny Sins in the Sheets based on the in t
 #imageDash =
 imageNumber = -1
 #rowNumber = 0
-savedImageNumber = 147
+savedImageNumber = 157
 
+customNumberWanted = int(input("do you want to start at custom point? "))
+
+if(customNumberWanted ==1):
+    customsavedImageNumber = int(input("Custom Point: "))
+    with open("imagenumber.txt", "wb") as file:
+        pickle.dump(customsavedImageNumber, file)
+        file.close()
 for cell in ws['A']:
 
     #rowNumber = str(cell[-2])
     imageNumber += 1
-    try:
-        savedImageNumber = pickle.load("imagenumber.txt")
-    except:
-        pass
+
+
+    with open("imagenumber.txt", "rb") as theFile:
+        savedImageNumber = pickle.load(theFile)
+
     if str(cell) == "<Cell 'player_name'.A1>":
         pass
     elif len(cell.value) > 15:
         pass
-    elif imageNumber <= 88:
+    elif imageNumber <= savedImageNumber:
         pass
     elif uploadFail == 1:
         pass
@@ -115,7 +123,10 @@ for cell in ws['A']:
         tags = str.title(cell.value) + tagsPrefix
         description = str.title(cell.value) + " " + descriptionPrefix
         #print(image)
-
+        with open("imagenumber.txt", "wb") as file:
+            pickle.dump(imageNumber, file)
+            file.close()
+        print(imageNumber)
         redbubble_upload(title, description, tags, image)
-        pickle.dump(imageNumber,"imagenumber.txt")
+
 
